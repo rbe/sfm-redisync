@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+    <title>FileXchanger</title>
+</h:head>
+<h:body>
+    <form id="j_security_check" method="post" action="j_security_check">
+        <h:panelGrid columns="2">
+            <h:outputLabel for="j_username" value="Benutzername"/>
+            <h:inputText id="j_username" autocomplete="off"/>
+            <h:outputLabel for="j_password" value="Passwort"/>
+            <h:inputSecret id="j_password" autocomplete="off"/>
+            &nbsp;
+            <h:commandButton value="Anmelden" type="submit"/>
+        </h:panelGrid>
+    </form>
+</h:body>
+</html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:o="http://openfaces.org/" xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+    <title>FileXchanger</title>
+</h:head>
+<h:body>
+    <o:forEach items="#{downloadBean.files}"
+               var="f">
+        <h:form enctype="multipart/form-data">
+            <o:foldingPanel style="width: 50%"
+                            caption="#{f.part.name}">
+                <h:panelGrid columns="3">
+                    Zuletzt ge&auml;ndert am
+                    <h:outputText value="#{f.lastModifiedAsGerman}"/>
+                    <h:commandLink action="#{f.download()}" value="Vorlage herunterladen"/>
+
+                    <f:verbatim>
+                        <hr/>
+                    </f:verbatim>
+                    <f:verbatim>
+                        <hr/>
+                    </f:verbatim>
+                    <f:verbatim>
+                        <hr/>
+                    </f:verbatim>
+
+                    <h:outputLabel for="part" value="Vorlage ersetzen"/>
+                    <h:inputFile id="part"
+                                 value="#{uploadBean.part}"
+                                 validator="#{uploadBean.validateFile}"/>
+                    <h:outputText/>
+
+                    <h:outputText/>
+                    <h:commandButton value="Upload"
+                                     action="#{uploadBean.uploadExisting}">
+                        <f:attribute name="filename" value="#{f.part.name}"/>
+                    </h:commandButton>
+                    <h:outputText/>
+                </h:panelGrid>
+            </o:foldingPanel>
+            <br/>
+        </h:form>
+    </o:forEach>
+</h:body>
+</html>

@@ -1,0 +1,8 @@
+# IntelliJ #
+.idea/
+target/
+out/
+
+# Java #
+
+*.class
