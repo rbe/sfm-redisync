@@ -26,16 +26,29 @@
         </h:form>
     </h:panelGrid>
     <h:panelGrid rendered="#{loginBean.authenticated}">
-        <h:form>
+        <h:form id="logoutForm">
             <h:commandLink action="#{loginBean.logout}" value="Abmelden"/>
         </h:form>
         <br/>
         <f:verbatim>
             <hr/>
         </f:verbatim>
+        <h:form id="directoryForm">
+            <h:panelGrid columns="2">
+                Aktuelles Verzeichnis:
+                <h:selectOneMenu id="directory" value="#{loginBean.selectedDirectory.name}">
+                    <f:selectItems value="#{loginBean.managedDirectories}"
+                                   var="v" itemLabel="#{v.name}" itemValue="#{v.name}"/>
+                    <f:ajax listener="#{loginBean.directoryChanged}" immediate="true" render=":filesGroup"/>
+                </h:selectOneMenu>
+            </h:panelGrid>
+        </h:form>
+        <f:verbatim>
+            <hr/>
+        </f:verbatim>
         Neue Vorlage erstellen:
         <br/>
-        <h:form enctype="multipart/form-data">
+        <h:form id="uploadNewFileForm" enctype="multipart/form-data">
             <h:panelGrid columns="1">
                 <h:inputFile id="newfile"
                              value="#{uploadBean.part}"
@@ -45,50 +58,51 @@
                                  action="#{uploadBean.uploadNew}"/>
             </h:panelGrid>
         </h:form>
-        <br/>
         <f:verbatim>
             <hr/>
         </f:verbatim>
         <br/>
-        <c:forEach items="${downloadBean.files}"
-                   var="f" varStatus="s">
-            <h:form enctype="multipart/form-data">
-                <h:panelGrid>
-                    <f:facet name="header">
-                        <h:outputText value="#{f.file.name}"/>
-                    </f:facet>
-                    <h:panelGrid columns="3">
-                        Zuletzt ge&auml;ndert am
-                        <h:outputText value="#{f.lastModifiedAsGerman}"/>
-                        <h:commandLink action="#{f.download()}" value="Vorlage herunterladen"/>
+        <h:panelGroup id="filesGroup">
+            <c:forEach items="${downloadBean.files}" var="f" varStatus="s">
+                <h:form enctype="multipart/form-data">
+                    <h:panelGrid>
+                        <f:facet name="header">
+                            <h:outputText value="#{f.file.name}"/>
+                        </f:facet>
+                        <h:panelGrid columns="3">
+                            Zuletzt ge&auml;ndert am
+                            <h:outputText value="#{f.lastModifiedAsGerman}"/>
+                            <h:commandLink action="#{f.download()}" value="Vorlage herunterladen"/>
 
-                        <f:verbatim>
-                            <hr/>
-                        </f:verbatim>
-                        <f:verbatim>
-                            <hr/>
-                        </f:verbatim>
-                        <f:verbatim>
-                            <hr/>
-                        </f:verbatim>
+                            <h:outputLabel for="existingfile" value="Vorlage ersetzen"/>
+                            <h:inputFile id="existingfile"
+                                         value="#{uploadBean.part}"
+                                         validator="#{uploadBean.validateFile}"/>
+                            <h:outputText/>
 
-                        <h:outputLabel for="existingfile" value="Vorlage ersetzen"/>
-                        <h:inputFile id="existingfile"
-                                     value="#{uploadBean.part}"
-                                     validator="#{uploadBean.validateFile}"/>
-                        <h:outputText/>
+                            <h:outputText/>
+                            <h:commandButton value="Upload"
+                                             action="#{uploadBean.uploadExisting}">
+                                <f:param name="filename" value="#{f.file.name}"/>
+                            </h:commandButton>
+                            <h:outputText/>
 
-                        <h:outputText/>
-                        <h:commandButton value="Upload"
-                                         action="#{uploadBean.uploadExisting}">
-                            <f:param name="filename" value="#{f.file.name}"/>
-                        </h:commandButton>
-                        <h:outputText/>
+                            <f:verbatim>
+                                <hr/>
+                            </f:verbatim>
+                            <f:verbatim>
+                                <hr/>
+                            </f:verbatim>
+                            <f:verbatim>
+                                <hr/>
+                            </f:verbatim>
+                        </h:panelGrid>
                     </h:panelGrid>
-                </h:panelGrid>
-                <br/>
-            </h:form>
-        </c:forEach>
+                    <br/>
+                </h:form>
+            </c:forEach>
+        </h:panelGroup>
     </h:panelGrid>
+    <h:messages/>
 </h:body>
 </html>

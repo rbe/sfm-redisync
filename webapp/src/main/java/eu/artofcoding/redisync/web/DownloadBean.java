@@ -11,9 +11,9 @@ package eu.artofcoding.redisync.web;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
-import javax.faces.bean.ManagedBean;
 import javax.inject.Inject;
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
@@ -21,10 +21,13 @@ import java.util.List;
 import java.util.TreeSet;
 
 @DeclareRoles({"uploader"})
-@ManagedBean
-public class DownloadBean {
+/*
+@javax.faces.bean.ManagedBean
+@javax.faces.bean.ViewScoped
+*/
+@javax.inject.Named
+public class DownloadBean implements Serializable {
 
-    private Path path;
     @Inject
     private FacesHelper facesHelper;
 
@@ -32,10 +35,6 @@ public class DownloadBean {
 
     @PostConstruct
     private void postConstruct() {
-        // BASE_PATH
-        String basePathParameter = String.format("%s.BASE_PATH", this.getClass().getName());
-        String basePath = FacesHelper.getInitParameter(basePathParameter);
-        path = Paths.get(basePath);
         // EXTENSIONS
         String extParameter = String.format("%s.EXTENSIONS", this.getClass().getName());
         String extensions = facesHelper.getInitParameter(extParameter);
@@ -97,7 +96,10 @@ public class DownloadBean {
 
     public List<Document> getFiles() throws IOException {
         List<Document> list = new ArrayList<>();
-        Files.walkFileTree(path, new TreeSet<FileVisitOption>(), 1, new F(list, exts));
+        ManagedDirectory managedDirectory = new FacesHelper().getSelectedManagedDirectory();
+        if (null != managedDirectory) {
+            Files.walkFileTree(managedDirectory.getPath(), new TreeSet<FileVisitOption>(), 1, new F(list, exts));
+        }
         return list;
     }
 

@@ -11,7 +11,6 @@ package eu.artofcoding.redisync.web;
 
 import javax.annotation.security.DeclareRoles;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -29,21 +28,24 @@ import java.util.List;
 import java.util.Map;
 
 @DeclareRoles({"uploader"})
-@ManagedBean
+/*
+@javax.faces.bean.ManagedBean
+*/
+@javax.inject.Named
+@javax.enterprise.context.RequestScoped
 public class UploadBean {
 
     private static final int MAX_FILE_SIZE_IN_BYTES = 10 * 1024 * 1024;
 
-    private Part part;
     @Inject
     private FacesHelper facesHelper;
-
-    private String uploadNewName;
+    
+    private Part part;
 
     public void validateFile(FacesContext facesContext, UIComponent uiComponent, Object value) {
         List<FacesMessage> msgs = new ArrayList<>();
         Part file = (Part) value;
-        final long sizeInBytes = file.getSize();
+        long sizeInBytes = file.getSize();
         if (sizeInBytes > MAX_FILE_SIZE_IN_BYTES) {
             msgs.add(new FacesMessage("part too big"));
         }
@@ -59,13 +61,17 @@ public class UploadBean {
     }
 
     public void uploadNew() {
-        String basePathParameter = String.format("%s.BASE_PATH", this.getClass().getName());
-        String basePath = FacesHelper.getInitParameter(basePathParameter);
-        String filename = FacesHelper.getFilename(part);
-        Path destination = Paths.get(basePath, filename);
+        String filename = facesHelper.getFilename(part);
+        ManagedDirectory managedDirectory = new FacesHelper().getSelectedManagedDirectory();
+        Path destination = Paths.get(managedDirectory.getPath().toString(), filename);
         try (InputStream stream = part.getInputStream()) {
-            Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
-            uploadNewName = null;
+            boolean madeDirectories = destination.toFile().getParentFile().mkdirs();
+            // TODO Must have a filename, will delete directory!!
+            // java.nio.file.DirectoryNotEmptyException: /Users/rbe/factit2
+            // at sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:241)
+            if (destination.toFile().isFile()) {
+                Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,11 +82,12 @@ public class UploadBean {
         ExternalContext externalContext = facesContext.getExternalContext();
         Map<String, String> params = externalContext.getRequestParameterMap();
         String filename = params.get("filename");
-        String basePathParameter = String.format("%s.BASE_PATH", this.getClass().getName());
-        String basePath = FacesHelper.getInitParameter(basePathParameter);
-        Path destination = Paths.get(basePath, filename);
+        ManagedDirectory managedDirectory = new FacesHelper().getSelectedManagedDirectory();
+        Path destination = Paths.get(managedDirectory.getPath().toString(), filename);
         try (InputStream stream = part.getInputStream()) {
-            Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
+            if (destination.toFile().isFile()) {
+                Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -92,14 +99,6 @@ public class UploadBean {
 
     public void setPart(Part part) {
         this.part = part;
-    }
-
-    public void setUploadNewName(String uploadNewName) {
-        this.uploadNewName = uploadNewName;
-    }
-
-    public String getUploadNewName() {
-        return uploadNewName;
     }
 
 }
