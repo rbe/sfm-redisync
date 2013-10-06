@@ -9,6 +9,7 @@
 
 package eu.artofcoding.redisync.web;
 
+import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,9 +19,15 @@ import java.util.Date;
 
 public class Document {
 
+    @Inject
+    private FacesHelper facesHelper;
+
     private SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 
     private Path path;
+
+    public Document() {
+    }
 
     public Document(Path path) {
         this.path = path;
@@ -47,7 +54,7 @@ public class Document {
     }
 
     public void download() throws IOException {
-        FacesHelper.download(
+        facesHelper.download(
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 path.getFileName().toString(),
                 Files.readAllBytes(path)

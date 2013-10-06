@@ -12,6 +12,7 @@ package eu.artofcoding.redisync.web;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
 import javax.faces.bean.ManagedBean;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -24,6 +25,8 @@ import java.util.TreeSet;
 public class DownloadBean {
 
     private Path path;
+    @Inject
+    private FacesHelper facesHelper;
 
     private String[] exts;
 
@@ -35,7 +38,7 @@ public class DownloadBean {
         path = Paths.get(basePath);
         // EXTENSIONS
         String extParameter = String.format("%s.EXTENSIONS", this.getClass().getName());
-        String extensions = FacesHelper.getInitParameter(extParameter);
+        String extensions = facesHelper.getInitParameter(extParameter);
         exts = extensions.split(",");
     }
 

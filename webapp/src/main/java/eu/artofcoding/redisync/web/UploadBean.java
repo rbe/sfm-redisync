@@ -16,6 +16,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+import javax.inject.Inject;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +35,8 @@ public class UploadBean {
     private static final int MAX_FILE_SIZE_IN_BYTES = 10 * 1024 * 1024;
 
     private Part part;
+    @Inject
+    private FacesHelper facesHelper;
 
     private String uploadNewName;
 

@@ -17,6 +17,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import java.io.Serializable;
@@ -25,6 +26,8 @@ import java.io.Serializable;
 @SessionScoped
 public class LoginBean implements Serializable {
 
+    @Inject
+    private FacesHelper facesHelper;
     private String ldapURL;
 
     private String ldapBaseDn;
