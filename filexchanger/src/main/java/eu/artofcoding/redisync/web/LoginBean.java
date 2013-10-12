@@ -56,7 +56,6 @@ public class LoginBean implements Serializable {
     @PostConstruct
     private void postConstruct() {
         String clazzName = this.getClass().getName();
-        String packageName = this.getClass().getPackage().getName();
         // LDAP configuration parameter
         ldapURL = facesHelper.getInitParameter(String.format("%s.LDAP_URL", clazzName));
         ldapBaseDn = facesHelper.getInitParameter(String.format("%s.LDAP_BASE_DN", clazzName));

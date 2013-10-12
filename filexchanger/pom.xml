@@ -8,9 +8,12 @@
         <artifactId>redisync</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>webapp</artifactId>
+    <artifactId>filexchanger</artifactId>
     <packaging>war</packaging>
     <dependencies>
+        <!--
+            Third party dependencies
+        -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -52,29 +55,12 @@
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
         </dependency>
-        <!-- OpenFaces -->
         <!--
-        <dependency>
-            <groupId>org.openfaces</groupId>
-            <artifactId>openfaces</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-collections</groupId>
-            <artifactId>commons-collections</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jfree</groupId>
-            <artifactId>jcommon</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-        </dependency>
+            Own dependencies
         -->
         <dependency>
             <groupId>eu.artofcoding.redisync</groupId>
             <artifactId>myredis</artifactId>
-            <version>${project.version}</version>
         </dependency>
     </dependencies>
     <build>
