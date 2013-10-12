@@ -69,7 +69,7 @@ public class UploadBean {
             // TODO Must have a filename, will delete directory!!
             // java.nio.file.DirectoryNotEmptyException: /Users/rbe/factit2
             // at sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:241)
-            if (destination.toFile().isFile()) {
+            if (!destination.toFile().isFile()) {
                 Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
             }
         } catch (IOException e) {
