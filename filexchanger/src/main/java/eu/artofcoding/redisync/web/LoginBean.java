@@ -29,7 +29,7 @@ import java.io.Serializable;
 @javax.inject.Named
 @javax.enterprise.context.SessionScoped
 public class LoginBean implements Serializable {
-    
+
     @Inject
     private FacesHelper facesHelper;
 
@@ -86,10 +86,12 @@ public class LoginBean implements Serializable {
     public String login() {
         // Reset flag
         authenticated = false;
+/*
         if (username.equals("ralf")) {
             authenticated = true;
             return "template";
         }
+*/
         // ADS
         FacesContext facesContext = FacesContext.getCurrentInstance();
         try (WindowsAuth windowsAuth = new WindowsAuth(ldapURL)) {
