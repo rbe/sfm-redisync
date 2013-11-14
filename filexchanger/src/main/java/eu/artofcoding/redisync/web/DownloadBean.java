@@ -12,6 +12,7 @@ package eu.artofcoding.redisync.web;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
 import javax.inject.Inject;
+import javax.inject.Named;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.*;
@@ -21,11 +22,7 @@ import java.util.List;
 import java.util.TreeSet;
 
 @DeclareRoles({"uploader"})
-/*
-@javax.faces.bean.ManagedBean
-@javax.faces.bean.ViewScoped
-*/
-@javax.inject.Named
+@Named
 public class DownloadBean implements Serializable {
 
     @Inject
@@ -101,6 +98,13 @@ public class DownloadBean implements Serializable {
             Files.walkFileTree(managedDirectory.getPath(), new TreeSet<FileVisitOption>(), 1, new F(list, exts));
         }
         return list;
+    }
+
+    public void download(Document document) throws IOException {
+        Path path = document.getPath();
+        String filename = path.getFileName().toString();
+        byte[] data = Files.readAllBytes(path);
+        facesHelper.download(Document.CONTENT_TYPE_DOCX, filename, data);
     }
 
 }

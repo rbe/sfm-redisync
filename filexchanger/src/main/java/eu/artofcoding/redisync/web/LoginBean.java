@@ -12,22 +12,20 @@ package eu.artofcoding.redisync.web;
 import eu.artofcoding.redisync.myredis.WindowsAuth;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.html.HtmlSelectOneMenu;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import java.io.Serializable;
 
-/*
-@javax.faces.bean.ManagedBean
-@javax.faces.bean.SessionScoped
-*/
-@javax.inject.Named
-@javax.enterprise.context.SessionScoped
+@Named
+@SessionScoped
 public class LoginBean implements Serializable {
 
     @Inject

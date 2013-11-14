@@ -10,12 +10,14 @@
 package eu.artofcoding.redisync.web;
 
 import javax.annotation.security.DeclareRoles;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,11 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 @DeclareRoles({"uploader"})
-/*
-@javax.faces.bean.ManagedBean
-*/
-@javax.inject.Named
-@javax.enterprise.context.RequestScoped
+@Named
+@RequestScoped
 public class UploadBean {
 
     private static final int MAX_FILE_SIZE_IN_BYTES = 10 * 1024 * 1024;

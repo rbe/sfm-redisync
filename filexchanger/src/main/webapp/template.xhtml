@@ -72,7 +72,7 @@
                         <h:panelGrid columns="3">
                             Zuletzt ge&auml;ndert am
                             <h:outputText value="#{f.lastModifiedAsGerman}"/>
-                            <h:commandLink action="#{f.download()}" value="Vorlage herunterladen"/>
+                            <h:commandLink action="#{downloadBean.download(f)}" value="Vorlage herunterladen"/>
 
                             <h:outputLabel for="existingfile" value="Vorlage ersetzen"/>
                             <h:inputFile id="existingfile"
