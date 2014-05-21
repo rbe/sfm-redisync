@@ -19,6 +19,7 @@ import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.Part;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -60,16 +61,24 @@ public class UploadBean {
     }
 
     public void uploadNew() {
+        // Check part
+        if (part.getSize() == 0) {
+            return;
+        }
         String filename = facesHelper.getFilename(part);
         ManagedDirectory managedDirectory = new FacesHelper().getSelectedManagedDirectory();
         Path destination = Paths.get(managedDirectory.getPath().toString(), filename);
         try (InputStream stream = part.getInputStream()) {
-            boolean madeDirectories = destination.toFile().getParentFile().mkdirs();
-            // TODO Must have a filename, will delete directory!!
-            // java.nio.file.DirectoryNotEmptyException: /Users/rbe/factit2
-            // at sun.nio.fs.UnixFileSystemProvider.implDelete(UnixFileSystemProvider.java:241)
-            if (!destination.toFile().isFile()) {
-                Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
+            File parentFile = destination.toFile().getParentFile();
+            if (!parentFile.isDirectory()) {
+                /*boolean madeDirectories = */
+                parentFile.mkdirs();
+            }
+            if (parentFile.isDirectory()) {
+                boolean isNewFile = !destination.toFile().isDirectory() && !destination.toFile().isFile();
+                if (isNewFile) {
+                    Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,18 +86,26 @@ public class UploadBean {
     }
 
     public void uploadExisting() {
+        // Check part
+        if (part.getSize() == 0) {
+            return;
+        }
         FacesContext facesContext = FacesContext.getCurrentInstance();
         ExternalContext externalContext = facesContext.getExternalContext();
         Map<String, String> params = externalContext.getRequestParameterMap();
         String filename = params.get("filename");
         ManagedDirectory managedDirectory = new FacesHelper().getSelectedManagedDirectory();
         Path destination = Paths.get(managedDirectory.getPath().toString(), filename);
-        try (InputStream stream = part.getInputStream()) {
-            if (destination.toFile().isFile()) {
-                Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
+        File parentFile = destination.toFile().getParentFile();
+        if (parentFile.isDirectory()) {
+            try (InputStream stream = part.getInputStream()) {
+                boolean canProceed = destination.toFile().isFile() && destination.toFile().canWrite();
+                if (canProceed) {
+                    Files.copy(stream, destination, StandardCopyOption.REPLACE_EXISTING);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
