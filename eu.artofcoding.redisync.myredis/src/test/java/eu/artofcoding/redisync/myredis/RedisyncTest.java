@@ -1,6 +1,7 @@
 package eu.artofcoding.redisync.myredis;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 
+@Ignore
 public class RedisyncTest {
 
     private Redisync redisync;

@@ -10,10 +10,12 @@
 package eu.artofcoding.redisync.myredis;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.naming.directory.DirContext;
 
+@Ignore
 public class WindowsAuthTest {
 
     private static final String LDAP_URL = "ldap://10.31.21.1:389";
