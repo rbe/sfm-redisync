@@ -5,12 +5,21 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>eu.artofcoding.redisync</groupId>
-        <artifactId>redisync</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>eu.artofcoding.redisync</artifactId>
+        <version>LOCALBUILD</version>
+        <relativePath>..</relativePath>
     </parent>
-    <artifactId>filexchanger</artifactId>
+    <artifactId>eu.artofcoding.redisync.filexchanger</artifactId>
     <packaging>war</packaging>
     <dependencies>
+        <!--
+            Own dependencies
+        -->
+        <dependency>
+            <groupId>eu.artofcoding.redisync</groupId>
+            <artifactId>eu.artofcoding.redisync.myredis</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <!--
             Third party dependencies
         -->
@@ -55,13 +64,6 @@
             <groupId>org.omnifaces</groupId>
             <artifactId>omnifaces</artifactId>
         </dependency>
-        <!--
-            Own dependencies
-        -->
-        <dependency>
-            <groupId>eu.artofcoding.redisync</groupId>
-            <artifactId>myredis</artifactId>
-        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -84,6 +86,5 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>${project.artifactId}</finalName>
     </build>
 </project>
