@@ -13,6 +13,7 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.java>1.7</version.java>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -103,6 +104,34 @@
                     <artifactId>maven-war-plugin</artifactId>
                     <version>2.3</version>
                 </plugin>
+                <!-- maven-javadoc-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>2.10.1</version>
+                    <configuration>
+                        <additionalJOptions>
+                            <additionalJOption>-J-Xms32m -J-Xmx128m</additionalJOption>
+                        </additionalJOptions>
+                    </configuration>
+                </plugin>
+                <!-- maven-surefire-plugin -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.18.1</version>
+                    <configuration>
+                        <forkCount>1</forkCount>
+                        <reuseForks>true</reuseForks>
+                        <argLine>-Xms32m -Xmx512m -XX:MaxPermSize=256m</argLine>
+                    </configuration>
+                </plugin>
+                <!-- sonar-maven-plugin -->
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>2.6</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
@@ -110,8 +139,9 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>${version.java}</source>
+                    <target>${version.java}</target>
+                    <compilerVersion>${version.java}</compilerVersion>
                 </configuration>
             </plugin>
         </plugins>
